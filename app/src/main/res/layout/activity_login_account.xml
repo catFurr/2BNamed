@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:isScrollContainer="true"
     tools:context=".loginAccount">
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -48,9 +49,9 @@
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/phoneloginview"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:id="@+id/phoneloginview" >
+        android:layout_height="match_parent">
 
         <EditText
             android:id="@+id/countryCode"

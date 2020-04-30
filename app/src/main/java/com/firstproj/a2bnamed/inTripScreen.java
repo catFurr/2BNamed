@@ -265,10 +265,10 @@ public class inTripScreen extends AppCompatActivity
     @Override
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String s) {
         // Update the buttons state depending on whether location updates are being requested.
-        if (s.equals(Utils.KEY_REQUESTING_LOCATION_UPDATES)) {
+//        if (s.equals(Utils.KEY_REQUESTING_LOCATION_UPDATES)) {
 //            setButtonsState(sharedPreferences.getBoolean(Utils.KEY_REQUESTING_LOCATION_UPDATES,
 //                    false));
-        }
+//        }
     }
 }
 

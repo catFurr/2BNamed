@@ -117,9 +117,6 @@ public class tripForeGrndSvc extends Service {
      */
     private Location mLocation;
 
-    // Thread for timer
-    Thread timerThread;
-
     // The time in secs
     int secs = 0;
 
@@ -220,9 +217,7 @@ public class tripForeGrndSvc extends Service {
     @Override
     public void onDestroy() {
         mServiceHandler.removeCallbacksAndMessages(null);
-        if (timerThread.isAlive()) {
-            timerThread.interrupt();
-        }
+
         super.onDestroy();
     }
 
@@ -232,6 +227,9 @@ public class tripForeGrndSvc extends Service {
      */
     public void requestLocationUpdates() {
         Log.i(TAG, "Requesting location updates");
+
+        if (Utils.requestingLocationUpdates(this)) return;
+
         Utils.setRequestingLocationUpdates(this, true);
         startService(new Intent(getApplicationContext(), tripForeGrndSvc.class));
         try {
@@ -249,7 +247,7 @@ public class tripForeGrndSvc extends Service {
             @Override
             public void run() {
                 // Run infinitely until interrupted
-                while (!Thread.interrupted()) {
+                while (Utils.requestingLocationUpdates(getApplicationContext())) {
                     secs++;
 
                     // Notify anyone listening for broadcasts about the new time.
@@ -258,17 +256,12 @@ public class tripForeGrndSvc extends Service {
                     intent.putExtra(EXTRA_SECS, secs);
                     LocalBroadcastManager.getInstance(getApplicationContext()).sendBroadcast(intent);
 
-                    try {
-                        Thread.sleep(1000);
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
+                    mServiceHandler.postDelayed(this, 1000);
                 }
             }
         };
 
-        timerThread = new Thread(runnable);
-        timerThread.start();
+        new Thread(runnable).start();
     }
 
     /**
@@ -277,18 +270,16 @@ public class tripForeGrndSvc extends Service {
      */
     public void removeLocationUpdates() {
         Log.i(TAG, "Removing location updates");
+
+        if (!Utils.requestingLocationUpdates(this)) return;
+
+        Utils.setRequestingLocationUpdates(this, false);
         try {
             mFusedLocationClient.removeLocationUpdates(mLocationCallback);
-            Utils.setRequestingLocationUpdates(this, false);
             stopSelf();
         } catch (SecurityException unlikely) {
             Utils.setRequestingLocationUpdates(this, true);
             Log.e(TAG, "Lost location permission. Could not remove updates. " + unlikely);
-        }
-
-        // Kill the timer if its still active
-        if (timerThread.isAlive()) {
-            timerThread.interrupt();
         }
     }
 

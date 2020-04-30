@@ -2,20 +2,15 @@ package com.firstproj.a2bnamed;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
-import android.graphics.Point;
 import android.os.Bundle;
-import android.text.style.ClickableSpan;
-import android.util.Log;
-import android.view.MotionEvent;
 import android.view.View;
-import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager.widget.PagerAdapter;
+import androidx.viewpager.widget.ViewPager;
 
 import com.firstproj.a2bnamed.adapter.mainFragmentAdapter;
 import com.firstproj.a2bnamed.adapter.recyclerViewAdapter;
@@ -25,6 +20,7 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.MapsInitializer;
 import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -32,7 +28,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 public class CoreApp extends AppCompatActivity
         implements recyclerViewAdapter.OnListInteractionListener{
 
-    private static String TAG = "coreApp";
+    private static final String TAG = "coreApp";
 
     public static final String USER_NAME_FIRST = "com.a2bnamed.usernamefirst";
     public static final String USER_NAME_LAST = "com.a2bnamed.usernamelast";
@@ -52,8 +48,9 @@ public class CoreApp extends AppCompatActivity
 
     public viewPagerCustom viewPager;
 
-    private Button bttnScan;
     RecyclerView LockList;
+
+    BottomSheetBehavior mBottomSheetList;
 
     MapView mMapView;
     private GoogleMap googleMap;
@@ -79,16 +76,16 @@ public class CoreApp extends AppCompatActivity
         viewPager = findViewById(R.id.view_pager);
         PagerAdapter adapter = new mainFragmentAdapter(getSupportFragmentManager());
         viewPager.setAdapter(adapter);
+//        viewPager.setClipToPadding(false);
+//        viewPager.setPadding(30, 0, 30, 0);
         viewPager.setCurrentItem(1);
 
-//        coreAppViewModel mViewModel = ViewModelProviders.of(this).get(coreAppViewModel.class);
 
-        bttnScan = findViewById(R.id.bttn_scan);
-        bttnScan.setOnClickListener(new View.OnClickListener() {
+        findViewById(R.id.bttn_scan).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                layoutParams.height = 100;
-                LockList.setLayoutParams(layoutParams);
+                // TODO Begin bluetooth scan
+                mBottomSheetList.setState(BottomSheetBehavior.STATE_COLLAPSED);
             }
         });
 
@@ -102,30 +99,9 @@ public class CoreApp extends AppCompatActivity
         RecyclerView.Adapter mAdapter = new recyclerViewAdapter(DummyContent.ITEMS, this);
         LockList.setAdapter(mAdapter);
 
-        LockList.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View view, MotionEvent motionEvent) {
-                Log.d(TAG, "Sliding ListView.");
-                int Y = (int) motionEvent.getRawY();
-                getWindowManager().getDefaultDisplay().getSize(mdispSize);
-                Y = mdispSize.y - Y;
-                switch (motionEvent.getAction() & MotionEvent.ACTION_MASK) {
-                    case MotionEvent.ACTION_DOWN:
-                        _yDelta = Y - layoutParams.height;
-                        break;
-                    case MotionEvent.ACTION_MOVE:
-                        layoutParams.height = Y - _yDelta;
-                        LockList.setLayoutParams(layoutParams);
-                        return true;
-                    case MotionEvent.ACTION_UP:
-                    case MotionEvent.ACTION_POINTER_DOWN:
-                    case MotionEvent.ACTION_POINTER_UP:
-                    default:
-                        break;
-                }
-                return false;
-            }
-        });
+        mBottomSheetList = BottomSheetBehavior.from(LockList);
+        mBottomSheetList.setState(BottomSheetBehavior.STATE_HIDDEN);
+
 
         mMapView = findViewById(R.id.mapView);
         mMapView.onCreate(savedInstanceState);
@@ -143,15 +119,12 @@ public class CoreApp extends AppCompatActivity
             public void onMapReady(GoogleMap mMap) {
                 googleMap = mMap;
 
-                // Google Maps can get the user position.
+                // TODO Google Maps can get the user position.
             }
         });
 
     }
 
-    private int _yDelta;
-    ConstraintLayout.LayoutParams layoutParams;
-    Point mdispSize = new Point();
 
     @Override
     public void onStart() {
@@ -160,12 +133,12 @@ public class CoreApp extends AppCompatActivity
         ((TextView)findViewById(R.id.txtName)).setText(getString(R.string.txtName, CoreApp.userNameFirst, CoreApp.userNameLast));
         ((TextView)findViewById(R.id.txtRollNo)).setText(CoreApp.userRollNo);
 
-        layoutParams = (ConstraintLayout.LayoutParams) LockList.getLayoutParams();
-        layoutParams.height = 0;
-        LockList.setLayoutParams(layoutParams);
-        LockList.bringToFront();
-        findViewById(R.id.bttn_scan).setVisibility(View.VISIBLE);
+//        LockList.setVisibility(View.VISIBLE);
+//        findViewById(R.id.bttn_scan).setVisibility(View.VISIBLE);
+//        LockList.bringToFront();
+
     }
+
 
     @Override
     public void onResume() {

@@ -4,11 +4,6 @@ import android.content.Context;
 import android.location.Location;
 import android.preference.PreferenceManager;
 
-import com.firstproj.a2bnamed.R;
-
-import java.text.DateFormat;
-import java.util.Date;
-
 public class Utils {
 
     public static final String KEY_REQUESTING_LOCATION_UPDATES = "requesting_locaction_updates";

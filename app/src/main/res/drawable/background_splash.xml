@@ -2,13 +2,13 @@
 <layer-list xmlns:android="http://schemas.android.com/apk/res/android">
 
     <!-- Fill the background with a solid color -->
-    <item android:drawable="@color/colorPrimaryDark"/>
+    <item android:drawable="@color/mud_brown"/>
 
     <!-- Place your bitmap in the center -->
     <item>
         <bitmap
-            android:gravity="center"
-            android:src="@drawable/cyclelogopng" />
+            android:src="@drawable/tire_tracks_mud_splash" />
+
     </item>
 
 </layer-list>
