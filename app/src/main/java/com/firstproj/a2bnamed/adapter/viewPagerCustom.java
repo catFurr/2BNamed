@@ -1,5 +1,6 @@
 package com.firstproj.a2bnamed.adapter;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
@@ -17,6 +18,7 @@ public class viewPagerCustom extends ViewPager {
     }
 
 
+    @SuppressLint("ClickableViewAccessibility")
     @Override
     public boolean onTouchEvent(MotionEvent event) {
 

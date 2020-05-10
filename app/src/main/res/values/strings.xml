@@ -20,11 +20,19 @@
     <string name="txtName">%s %s</string>
 
     <string name="permission_rationale">I said so.</string>
-    <string name="ok">Ok</string>
     <string name="settings">Settings</string>
     <string name="permission_denied_explanation">You are a #@$%er.</string>
 
     <string name="spacer_terms">\n\n\n\n\nTerms of Use            Privacy Policy</string>
+
+
+    <!--    Core App-->
+    <string name="ca_bttnScan" >Start Scan</string>
+    <string name="ca_bttnReportIssue" >Report an Issue</string>
+
+    <!--  Finance Tab  -->
+    <string name="ft_balanceView" >\u20B90.00</string>
+    <string name="ft_bttnAddBalance" >Add Balance</string>
 
     <!--    Firebase FireStore IDs-->
     <string name="users">users</string>

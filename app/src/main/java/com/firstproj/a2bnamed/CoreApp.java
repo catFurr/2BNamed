@@ -1,17 +1,15 @@
 package com.firstproj.a2bnamed;
 
-import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager.widget.PagerAdapter;
-import androidx.viewpager.widget.ViewPager;
 
+import com.firstproj.a2bnamed.adapter.customTabFrame;
 import com.firstproj.a2bnamed.adapter.mainFragmentAdapter;
 import com.firstproj.a2bnamed.adapter.recyclerViewAdapter;
 import com.firstproj.a2bnamed.adapter.viewPagerCustom;
@@ -19,7 +17,6 @@ import com.firstproj.a2bnamed.dummy.DummyContent;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.MapsInitializer;
-import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
@@ -55,7 +52,6 @@ public class CoreApp extends AppCompatActivity
     MapView mMapView;
     private GoogleMap googleMap;
 
-    @SuppressLint("ClickableViewAccessibility")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -73,23 +69,16 @@ public class CoreApp extends AppCompatActivity
         db = FirebaseFirestore.getInstance();
         userDocRef = db.collection(getString(R.string.users)).document(user.getUid());
 
-        viewPager = findViewById(R.id.view_pager);
+        viewPager = findViewById(R.id.ca_view_pager);
         PagerAdapter adapter = new mainFragmentAdapter(getSupportFragmentManager());
         viewPager.setAdapter(adapter);
 //        viewPager.setClipToPadding(false);
 //        viewPager.setPadding(30, 0, 30, 0);
         viewPager.setCurrentItem(1);
 
+        customTabFrame tabFrame = findViewById(R.id.ca_TabFrameView);
 
-        findViewById(R.id.bttn_scan).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                // TODO Begin bluetooth scan
-                mBottomSheetList.setState(BottomSheetBehavior.STATE_COLLAPSED);
-            }
-        });
-
-        LockList = findViewById(R.id.lockListView);
+        LockList = findViewById(R.id.ca_lockListView);
 
         // use a linear layout manager
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
@@ -102,8 +91,10 @@ public class CoreApp extends AppCompatActivity
         mBottomSheetList = BottomSheetBehavior.from(LockList);
         mBottomSheetList.setState(BottomSheetBehavior.STATE_HIDDEN);
 
+        tabFrame.setupTabWithUIComps(viewPager, mBottomSheetList);
 
-        mMapView = findViewById(R.id.mapView);
+
+        mMapView = findViewById(R.id.ca_mapView);
         mMapView.onCreate(savedInstanceState);
 
         mMapView.onResume(); // needed to get the map to display immediately
@@ -114,13 +105,10 @@ public class CoreApp extends AppCompatActivity
             e.printStackTrace();
         }
 
-        mMapView.getMapAsync(new OnMapReadyCallback() {
-            @Override
-            public void onMapReady(GoogleMap mMap) {
-                googleMap = mMap;
+        mMapView.getMapAsync(mMap -> {
+            googleMap = mMap;
 
-                // TODO Google Maps can get the user position.
-            }
+            // TODO Google Maps can get the user position.
         });
 
     }
@@ -130,13 +118,8 @@ public class CoreApp extends AppCompatActivity
     public void onStart() {
         super.onStart();
 
-        ((TextView)findViewById(R.id.txtName)).setText(getString(R.string.txtName, CoreApp.userNameFirst, CoreApp.userNameLast));
-        ((TextView)findViewById(R.id.txtRollNo)).setText(CoreApp.userRollNo);
-
-//        LockList.setVisibility(View.VISIBLE);
-//        findViewById(R.id.bttn_scan).setVisibility(View.VISIBLE);
-//        LockList.bringToFront();
-
+        ((TextView)findViewById(R.id.ca_txtName)).setText(getString(R.string.txtName, CoreApp.userNameFirst, CoreApp.userNameLast));
+        ((TextView)findViewById(R.id.ca_txtRollNo)).setText(CoreApp.userRollNo);
     }
 
 

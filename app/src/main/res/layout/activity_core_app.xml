@@ -6,104 +6,93 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".CoreApp"
-    android:id="@+id/coreApp">
+    tools:context=".CoreApp">
 
 
     <com.google.android.gms.maps.MapView
-        android:id="@+id/mapView"
+        android:id="@+id/ca_mapView"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 
     <com.firstproj.a2bnamed.adapter.viewPagerCustom
-        android:id="@+id/view_pager"
+        android:id="@+id/ca_view_pager"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" >
+        android:layout_height="match_parent" />
 
-    </com.firstproj.a2bnamed.adapter.viewPagerCustom>
+
+
+    <!--    Bottom Tab Actions Frame-->
+    <com.firstproj.a2bnamed.adapter.customTabFrame
+        android:layout_width="match_parent"
+        android:layout_height="128dp"
+        app:layout_anchor="@id/ca_lockListView"
+        app:layout_anchorGravity="top"
+        android:id="@+id/ca_TabFrameView"/>
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/lockListView"
+        android:id="@+id/ca_lockListView"
         android:layout_width="match_parent"
-        android:layout_height="300dp"
-        android:layout_marginLeft="30dp"
-        android:layout_marginRight="30dp"
-        android:background="@drawable/shapelocklist_bg"
-        android:isScrollContainer="false"
-        android:scrollbars="none"
-        app:fastScrollEnabled="false"
-        app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior"
-        app:behavior_hideable="true"
-        app:behavior_peekHeight="30dp"
-        app:behavior_skipCollapsed="false"
-        android:elevation="2dp">
-
-    </androidx.recyclerview.widget.RecyclerView>
-
-
-    <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
-        android:id="@+id/bttn_scan"
-        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="60dp"
-        android:contentDescription="Click me or Die!!!"
-        android:text="Begin Scan"
-        app:layout_anchor="@id/lockListView"
-        app:layout_anchorGravity="center|top">
+        android:background="@drawable/shapelocklist_bg"
+        android:elevation="2dp"
+        android:isScrollContainer="false"
+        android:orientation="vertical"
+        android:scrollbars="none"
+        app:behavior_hideable="true"
+        app:behavior_peekHeight="184dp"
+        app:behavior_skipCollapsed="false"
+        app:fastScrollEnabled="false"
+        app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior" />
 
-    </com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton>
 
-
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <!--    Top Header Frame-->
+    <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent" >
+        android:layout_height="94dp"
+        android:layout_gravity="top"
+        android:alpha="0.7"
+        android:background="@color/white">
 
         <TextView
-            android:id="@+id/txtName"
+            android:id="@+id/ca_txtName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="32dp"
-            android:textAlignment="viewStart"
+            android:layout_marginTop="18dp"
             android:textColor="@color/black"
             android:textSize="18sp"
-            app:layout_constraintBottom_toTopOf="@+id/headerGuideline"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.3"
             tools:text="Mohammed Ibrahim Ali" />
 
         <TextView
-            android:id="@+id/txtRollNo"
+            android:id="@+id/ca_txtRollNo"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="32dp"
+            android:layout_marginTop="44dp"
             android:textAlignment="viewStart"
             android:textColor="@color/dark_gray"
-            app:layout_constraintBottom_toTopOf="@+id/headerGuideline"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.6"
+            android:textSize="14sp"
             tools:text="181EC225" />
 
         <TextView
-            android:id="@+id/txtNumTrips"
+            android:id="@+id/ca_txtHomeNest"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="32dp"
+            android:layout_marginTop="64dp"
             android:textColor="@color/dark_gray"
-            app:layout_constraintBottom_toTopOf="@+id/headerGuideline"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.9"
-            tools:text="18 Trips." />
+            android:textSize="14sp"
+            tools:text="Home Nest : Red" />
 
-        <androidx.constraintlayout.widget.Guideline
-            android:id="@+id/headerGuideline"
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/ca_bttnIssue"
+            style="?attr/borderlessButtonStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            app:layout_constraintGuide_percent="0.15" />
+            android:layout_gravity="bottom|end"
+            android:layout_marginEnd="18dp"
+            android:text="@string/ca_bttnReportIssue" />
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+    </FrameLayout>
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

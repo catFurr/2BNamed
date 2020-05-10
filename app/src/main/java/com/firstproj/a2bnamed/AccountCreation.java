@@ -8,11 +8,8 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.ActionCodeSettings;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -139,15 +136,12 @@ public class AccountCreation extends AppCompatActivity implements View.OnClickLi
         Log.d(TAG, "Email ActionCode Built Successfully");
         FirebaseAuth auth = FirebaseAuth.getInstance();
         auth.sendSignInLinkToEmail(emailId, actionCodeSettings)
-                .addOnCompleteListener(new OnCompleteListener<Void>() {
-                    @Override
-                    public void onComplete(@NonNull Task<Void> task) {
-                        if (task.isSuccessful()) {
-                            Log.d(TAG, "Email sent.");
-                            makeAccount();
-                        } else {
-                            Log.d(TAG, "Task failed: " + task.getException());
-                        }
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        Log.d(TAG, "Email sent.");
+                        makeAccount();
+                    } else {
+                        Log.d(TAG, "Task failed: " + task.getException());
                     }
                 });
         uiState = STATE_EMAIL_SENT;

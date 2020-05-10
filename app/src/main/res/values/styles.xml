@@ -10,10 +10,14 @@
 
 <!--     Splash Screen theme-->
     <style name="SplashTheme" parent="AppTheme">
-        <item name="android:background">@drawable/background_splash</item>
         <item name="android:windowAnimationStyle">@null</item>
         <item name="android:windowTranslucentNavigation">true</item>
         <item name="android:windowTranslucentStatus">true</item>
+        <item name="android:colorBackground">@color/mud_brown</item>
+    </style>
+
+<!--    inTripScreen Theme-->
+    <style name="inTripScreenTheme" parent="Theme.MaterialComponents.DayNight">
     </style>
 
 </resources>
