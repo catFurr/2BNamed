@@ -1,58 +1,61 @@
 <resources>
+    <!--  Main Activity  -->
     <string name="app_name">2BNamed</string>
-    <string name="splashscreen">2BNamed</string>
-    <string name="status_code_sent">SMS Code Sent</string>
-    <string name="status_verification_failed">Verification Failed.</string>
-    <string name="status_verification_succeeded">Successfully Verified.</string>
-    <string name="sendNumberButton">Login</string>
-    <string name="status_sign_in_failed">Sign In Failed.</string>
-    <string name="signed_out">Sign Out</string>
-    <string name="signed_in">You are signed in as</string>
-    <string name="verifycodebutton">Verify Code</string>
-    <string name="userInfoCustom">%s : %s</string>
 
-    <string name="txtusername">Choose a username to be displayed to other users</string>
-    <string name="txtRollNo">Your College Roll No. (181EC023 format only)</string>
-    <string name="txtfirstname">First Name</string>
-    <string name="txtlastname">Last Name</string>
-    <string name="txtNextButton">Next</string>
+    <!--    Login Activity-->
+    <string name="la_status_code_sent">SMS Code Sent</string>
+    <string name="la_status_verification_failed">Verification Failed.</string>
+    <string name="la_status_verification_succeeded">Successfully Verified.</string>
+    <string name="la_send_number_button">Login</string>
+    <string name="la_status_sign_in_failed">Sign In Failed.</string>
+    <string name="la_verify_code_button">Verify Code</string>
+    <string name="la_resend_code_button">Resend Code</string>
+    <string name="la_invalid_no">Invalid Phone Number</string>
+    <string name="la_sms_exceeded">SMS Quota exceeded</string>
+    <string name="la_invalid_code">Invalid Code</string>
+    <string name="la_empty_err">Cannot be empty</string>
 
-    <string name="txtName">%s %s</string>
-
-    <string name="permission_rationale">I said so.</string>
-    <string name="settings">Settings</string>
-    <string name="permission_denied_explanation">You are a #@$%er.</string>
-
-    <string name="spacer_terms">\n\n\n\n\nTerms of Use            Privacy Policy</string>
-
+    <!--    Account Creation Activity-->
+    <string name="ac_username">Choose a username to be displayed to other users</string>
+    <string name="ac_roll_no">Your College Roll No. (181EC023 format only)</string>
+    <string name="ac_nitk_email">Enter your NITK email ID</string>
+    <string name="ac_first_name">First Name</string>
+    <string name="ac_last_name">Last Name</string>
+    <string name="ac_next_button">Next</string>
 
     <!--    Core App-->
-    <string name="ca_bttnScan" >Start Scan</string>
-    <string name="ca_bttnReportIssue" >Report an Issue</string>
+    <string name="ca_button_scan">Start Scan</string>
+    <string name="ca_button_report_issue">Report an Issue</string>
+    <string name="ca_txt_name">%s %s</string>
 
     <!--  Finance Tab  -->
-    <string name="ft_balanceView" >\u20B90.00</string>
-    <string name="ft_bttnAddBalance" >Add Balance</string>
+    <string name="ft_balance_view">\u20B9%d.%d</string>
+    <string name="ft_button_add_balance">Add Balance</string>
+
+    <!--    Data User Tab-->
+    <string name="dt_spacer_terms">\n\n\n\n\n\n\nCheck out the Terms of Use and Privacy Policy.</string>
+
+    <!--    inTrip Screen Activity-->
+    <string name="tsa_permission_rationale">I said so.</string>
+    <string name="tsa_settings">Settings</string>
+    <string name="tsa_permission_denied_explanation">You are a #@$%er.</string>
 
     <!--    Firebase FireStore IDs-->
-    <string name="users">users</string>
+    <string name="fb_users" translatable="false">users</string>
+    <string name="fb_colonys" translatable="false">colonys</string>
+    <string name="fb_nests" translatable="false">nests</string>
+    <string name="fb_cycles" translatable="false">cycles</string>
 
-    <string name="colonys">colonys</string>
-    <string name="nests">nests</string>
-    <string name="cycles">cycles</string>
-
-    <string name="firstNameUser">First Name</string>
-    <string name="lastNameUser">Last Name</string>
-    <string name="userName">User Nick Name</string>
-    <string name="userRollNo">Roll No</string>
-    <string name="emailVerified">Is Email Verified?</string>
-    <string name="emailId">NITK Email ID</string>
-    <string name="defaultNest">Default Nest</string>
-    <string name="userLoggedInTimes">numTimesLoggedIn</string>
-    <string name="lastLoggedInTimestamp">lastLoggedAt</string>
+    <string name="user_first_name" translatable="false">First Name</string>
+    <string name="user_last_name" translatable="false">Last Name</string>
+    <string name="user_roll_no" translatable="false">Roll No</string>
+    <string name="user_email_verified" translatable="false">Is Email Verified?</string>
+    <string name="user_email_id" translatable="false">NITK Email ID</string>
+    <string name="user_home_nest" translatable="false">Default Nest</string>
+    <string name="user_logged_in_times" translatable="false">numTimesLoggedIn</string>
+    <string name="user_last_timestamp" translatable="false">lastLoggedAt</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
-
 
 </resources>

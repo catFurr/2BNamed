@@ -23,13 +23,19 @@ public class DummyContent {
      */
     public static final Map<String, DummyItem> ITEM_MAP = new HashMap<String, DummyItem>();
 
-    private static final int COUNT = 25;
+    private static final int COUNT = 3;
 
     static {
         // Add some sample items.
-        for (int i = 1; i <= COUNT; i++) {
-            addItem(createDummyItem(i));
-        }
+        DummyItem item = new DummyItem("1", "EA3 B21", "");
+        ITEMS.add(item);
+        ITEM_MAP.put(item.id, item);
+        DummyItem item1 = new DummyItem("2", "AFC 1B2", "");
+        ITEMS.add(item1);
+        ITEM_MAP.put(item1.id, item1);
+        DummyItem item2 = new DummyItem("3", "99D 65D", "");
+        ITEMS.add(item2);
+        ITEM_MAP.put(item2.id, item2);
     }
 
     private static void addItem(DummyItem item) {

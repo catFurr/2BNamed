@@ -24,7 +24,7 @@ public class viewPagerCustom extends ViewPager {
 
         if (this.getCurrentItem() == 1) {
             if (event.getAction() == MotionEvent.ACTION_DOWN) {
-                if (event.getX() > getWidth()*0.05 && event.getX() < getWidth()*0.95) {
+                if (event.getX() > getWidth()*0.1 && event.getX() < getWidth()*0.9) {
                     return false;
                 }
             }

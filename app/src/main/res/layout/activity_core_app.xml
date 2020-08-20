@@ -5,8 +5,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".CoreApp">
+    android:layout_height="match_parent" >
 
 
     <com.google.android.gms.maps.MapView
@@ -39,7 +38,7 @@
         android:orientation="vertical"
         android:scrollbars="none"
         app:behavior_hideable="true"
-        app:behavior_peekHeight="184dp"
+        app:behavior_peekHeight="48dp"
         app:behavior_skipCollapsed="false"
         app:fastScrollEnabled="false"
         app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior" />
@@ -50,7 +49,7 @@
         android:layout_width="match_parent"
         android:layout_height="94dp"
         android:layout_gravity="top"
-        android:alpha="0.7"
+        android:alpha="0.8"
         android:background="@color/white">
 
         <TextView
@@ -60,7 +59,8 @@
             android:layout_marginStart="32dp"
             android:layout_marginTop="18dp"
             android:textColor="@color/black"
-            android:textSize="18sp"
+            android:textSize="25sp"
+            android:textStyle="bold"
             tools:text="Mohammed Ibrahim Ali" />
 
         <TextView
@@ -68,10 +68,11 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="32dp"
-            android:layout_marginTop="44dp"
+            android:layout_marginTop="55dp"
             android:textAlignment="viewStart"
             android:textColor="@color/dark_gray"
-            android:textSize="14sp"
+            android:textSize="18sp"
+            android:textStyle="bold"
             tools:text="181EC225" />
 
         <TextView
@@ -91,7 +92,16 @@
             android:layout_height="wrap_content"
             android:layout_gravity="bottom|end"
             android:layout_marginEnd="18dp"
-            android:text="@string/ca_bttnReportIssue" />
+            android:text="@string/ca_button_report_issue" />
+
+        <ImageView
+            android:id="@+id/ca_bttnEdit"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:layout_gravity="end|top"
+            android:layout_marginEnd="48dp"
+            android:layout_marginTop="12dp"
+            app:srcCompat="@drawable/ic_mode_edit_24dp" />
 
     </FrameLayout>
 

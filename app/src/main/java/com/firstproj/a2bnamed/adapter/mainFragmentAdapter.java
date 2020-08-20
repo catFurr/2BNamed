@@ -11,8 +11,8 @@ import com.firstproj.a2bnamed.tabs.mapCycleTab;
 
 public class mainFragmentAdapter extends FragmentPagerAdapter {
 
-    public mainFragmentAdapter(@NonNull FragmentManager fm) {
-        super(fm);
+    public mainFragmentAdapter(@NonNull FragmentManager fm, int behavior) {
+        super(fm, behavior);
     }
 
     @NonNull

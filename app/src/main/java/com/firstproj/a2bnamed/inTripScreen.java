@@ -133,7 +133,7 @@ public class inTripScreen extends AppCompatActivity
             Log.i(TAG, "Displaying permission rationale to provide additional context.");
             Snackbar.make(
                     findViewById(R.id.activity_trip_screen),
-                    R.string.permission_rationale,
+                    R.string.tsa_permission_rationale,
                     Snackbar.LENGTH_INDEFINITE)
                     .setAction(R.string.ok, view -> {
                         // Request permission
@@ -172,9 +172,9 @@ public class inTripScreen extends AppCompatActivity
                 // Permission denied.
                 Snackbar.make(
                         findViewById(R.id.activity_trip_screen),
-                        R.string.permission_denied_explanation,
+                        R.string.tsa_permission_denied_explanation,
                         Snackbar.LENGTH_INDEFINITE)
-                        .setAction(R.string.settings, view -> {
+                        .setAction(R.string.tsa_settings, view -> {
                             // Build intent that displays the App settings screen.
                             Intent intent = new Intent();
                             intent.setAction(
@@ -265,4 +265,3 @@ public class inTripScreen extends AppCompatActivity
 //        }
     }
 }
-

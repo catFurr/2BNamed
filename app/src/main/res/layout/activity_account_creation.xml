@@ -4,14 +4,13 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:isScrollContainer="true"
-    tools:context=".AccountCreation">
+    android:isScrollContainer="true" >
 
     <Button
         android:id="@+id/nextButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/txtNextButton"
+        android:text="@string/ac_next_button"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
@@ -25,7 +24,7 @@
             android:id="@+id/txtRollNo"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/txtRollNo"
+            android:text="@string/ac_roll_no"
             app:layout_constraintBottom_toTopOf="@+id/userRollNo"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -61,7 +60,7 @@
             android:id="@+id/txtLastName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/txtlastname"
+            android:text="@string/ac_last_name"
             app:layout_constraintBottom_toTopOf="@+id/lastName"
             app:layout_constraintStart_toStartOf="@+id/lastName"
             app:layout_constraintTop_toTopOf="parent"
@@ -93,7 +92,7 @@
             android:id="@+id/txtFirstName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/txtfirstname"
+            android:text="@string/ac_first_name"
             app:layout_constraintBottom_toTopOf="@+id/firstName"
             app:layout_constraintStart_toStartOf="@+id/firstName"
             app:layout_constraintTop_toTopOf="parent"
@@ -122,7 +121,7 @@
             android:id="@+id/txtEmailAddr"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Enter your NITK email"
+            android:text="@string/ac_nitk_email"
             app:layout_constraintBottom_toTopOf="@+id/emailAddr"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"

@@ -1,28 +1,38 @@
 package com.firstproj.a2bnamed;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
-import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.NavDirections;
+import androidx.navigation.Navigation;
 
+import com.firstproj.a2bnamed.adapter.viewmodel;
 import com.google.firebase.auth.ActionCodeSettings;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.HashMap;
 import java.util.Map;
 
-public class AccountCreation extends AppCompatActivity implements View.OnClickListener{
+public class accountCreationFrag extends Fragment {
+
+    public accountCreationFrag() {
+        // Required empty public constructor
+    }
 
     private static String TAG = "AccountCreationActivity";
+
+    private View parentView;
+    private viewmodel sharedViewModel;
 
     private Button mNextButton;
     private EditText mRollNo;
@@ -41,35 +51,45 @@ public class AccountCreation extends AppCompatActivity implements View.OnClickLi
 
     private String emailId;
 
-    private FirebaseUser user;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_account_creation);
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        parentView = inflater.inflate(R.layout.activity_account_creation, container, false);
 
-        if (savedInstanceState != null) {
-            onRestoreInstanceState(savedInstanceState);
-        }
+        sharedViewModel = new ViewModelProvider(requireActivity()).get(viewmodel.class);
 
-        mRollNo = findViewById(R.id.userRollNo);
-        mNameFirst = findViewById(R.id.firstName);
-        mNameLast = findViewById(R.id.lastName);
-        mEmailAddr = findViewById(R.id.emailAddr);
+        mRollNo = parentView.findViewById(R.id.userRollNo);
+        mNameFirst = parentView.findViewById(R.id.firstName);
+        mNameLast = parentView.findViewById(R.id.lastName);
+        mEmailAddr = parentView.findViewById(R.id.emailAddr);
 
-        mNameFirstLastView = findViewById(R.id.firstlastnameview);
-        mRollNoView = findViewById(R.id.rollnoview);
-        mEmailAddrView = findViewById(R.id.emailAddrView);
+        mNameFirstLastView = parentView.findViewById(R.id.firstlastnameview);
+        mRollNoView = parentView.findViewById(R.id.rollnoview);
+        mEmailAddrView = parentView.findViewById(R.id.emailAddrView);
 
-        mNextButton = findViewById(R.id.nextButton);
-        mNextButton.setOnClickListener(this);
-
-        Intent starterIntent = getIntent();
-        user = starterIntent.getParcelableExtra(MainActivity.UID_MESSAGE);
+        mNextButton = parentView.findViewById(R.id.nextButton);
+        mNextButton.setOnClickListener(view -> {
+            switch(uiState) {
+                case STATE_NAME:
+                    uiState = STATE_ROLLNO;
+                    break;
+                case STATE_ROLLNO:
+                    uiState = STATE_EMAIL;
+                    break;
+                case STATE_EMAIL:
+                    emailLinkAuth();
+                    break;
+            }
+            updateUI();
+        });
 
         uiState = STATE_NAME;
         updateUI();
+
+        return parentView;
     }
+
 
     private void updateUI() {
         switch (uiState) {
@@ -118,7 +138,7 @@ public class AccountCreation extends AppCompatActivity implements View.OnClickLi
 //            return;
 //        }
 
-        String url = "http://named-2empty.firebaseapp.com/verify?uid=" + user.getUid();
+        String url = "http://named-2empty.firebaseapp.com/verify?uid=" + sharedViewModel.getUserUid();
         ActionCodeSettings actionCodeSettings =
                 ActionCodeSettings.newBuilder()
                         // URL you want to redirect back to. The domain for this
@@ -144,56 +164,37 @@ public class AccountCreation extends AppCompatActivity implements View.OnClickLi
                         Log.d(TAG, "Task failed: " + task.getException());
                     }
                 });
+
         uiState = STATE_EMAIL_SENT;
         updateUI();
     }
 
     private void makeAccount() {
-        FirebaseFirestore db = FirebaseFirestore.getInstance();
-        DocumentReference userDocRef = db.collection(getString(R.string.users)).document(user.getUid());
+        sharedViewModel.db = FirebaseFirestore.getInstance();
+        sharedViewModel.userDoc = sharedViewModel.db.collection(getString(R.string.fb_users)).document(sharedViewModel.getUserUid());
 
         String nameFirst = mNameFirst.getText().toString();
         String nameLast = mNameLast.getText().toString();
         String rollNo = mRollNo.getText().toString();
 
         Map<String, Object> userDetails = new HashMap<>();
-        userDetails.put(getString(R.string.firstNameUser), nameFirst);
-        userDetails.put(getString(R.string.lastNameUser), nameLast);
-        userDetails.put(getString(R.string.userRollNo), rollNo);
-        userDetails.put(getString(R.string.emailVerified), false);
-        userDetails.put(getString(R.string.emailId), emailId);
-        userDetails.put(getString(R.string.userLoggedInTimes), 0);
-        userDetails.put(getString(R.string.lastLoggedInTimestamp), FieldValue.serverTimestamp());
-        userDocRef.set(userDetails);
+        userDetails.put(getString(R.string.user_first_name), nameFirst);
+        userDetails.put(getString(R.string.user_last_name), nameLast);
+        userDetails.put(getString(R.string.user_roll_no), rollNo);
+        userDetails.put(getString(R.string.user_email_verified), false);
+        userDetails.put(getString(R.string.user_email_id), emailId);
+        userDetails.put(getString(R.string.user_logged_in_times), 0);
+        userDetails.put(getString(R.string.user_last_timestamp), FieldValue.serverTimestamp());
+
+        sharedViewModel.userDoc.set(userDetails);
+
+        sharedViewModel.setUserDoc(sharedViewModel.userDoc.get().getResult());
 
         // Finally open the App with this user
-        // Pass along the user too
         Log.v(TAG, "Starting CoreApp Activity");
-        Intent intentA = new Intent(this, CoreApp.class);
-        intentA.putExtra(MainActivity.UID_MESSAGE, user);
-        intentA.putExtra(CoreApp.USER_NAME_FIRST, nameFirst);
-        intentA.putExtra(CoreApp.USER_NAME_LAST, nameLast);
-        intentA.putExtra(CoreApp.USER_ROLL_NO, rollNo);
-        intentA.putExtra(CoreApp.USER_EMAIL_CHECK, false);
-        intentA.putExtra(CoreApp.USER_EMAIL, emailId);
 
-        startActivity(intentA);
-        finish();
-    }
-
-    @Override
-    public void onClick(View view) {
-        switch(uiState) {
-            case STATE_NAME:
-                uiState = STATE_ROLLNO;
-                break;
-            case STATE_ROLLNO:
-                uiState = STATE_EMAIL;
-                break;
-            case STATE_EMAIL:
-                emailLinkAuth();
-                break;
-        }
-        updateUI();
+        NavDirections action =
+                accountCreationFragDirections.actionAccountCreationFragToCoreFrag();
+        Navigation.findNavController(parentView).navigate(action);
     }
 }

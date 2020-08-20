@@ -1,5 +1,69 @@
 <?xml version="1.0" encoding="utf-8"?>
-<navigation
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/nav_graph" />
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/coreFrag">
+    <fragment
+        android:id="@+id/coreFrag"
+        android:name="com.firstproj.a2bnamed.CoreFrag"
+        android:label="CoreFrag">
+        <action
+            android:id="@+id/action_coreFrag_to_inTripScreenFrag"
+            app:destination="@id/inTripScreenFrag" />
+        <action
+            android:id="@+id/action_coreFrag_to_reportIssueFrag"
+            app:destination="@id/reportIssueFrag" />
+        <action
+            android:id="@+id/action_coreFrag_to_loginFrag"
+            app:destination="@id/loginFrag"
+            app:popUpTo="@id/coreFrag"
+            app:popUpToInclusive="true" />
+        <action
+            android:id="@+id/action_coreFrag_to_accountCreationFrag"
+            app:destination="@id/accountCreationFrag"
+            app:popUpTo="@id/coreFrag"
+            app:popUpToInclusive="true" />
+        <deepLink
+            android:id="@+id/deepLinkEmailAuth"
+            app:uri="named-2empty.firebaseapp.com" />
+        <action
+            android:id="@+id/action_coreFrag_to_settingsFrag"
+            app:destination="@id/settingsFrag" />
+    </fragment>
+    <fragment
+        android:id="@+id/inTripScreenFrag"
+        android:name="com.firstproj.a2bnamed.inTripScreenFrag"
+        android:label="inTripScreenFrag">
+        <action
+            android:id="@+id/action_inTripScreenFrag_to_reportIssueFrag"
+            app:destination="@id/reportIssueFrag" />
+    </fragment>
+    <fragment
+        android:id="@+id/reportIssueFrag"
+        android:name="com.firstproj.a2bnamed.reportIssueFrag"
+        android:label="reportIssueFrag" />
+    <fragment
+        android:id="@+id/loginFrag"
+        android:name="com.firstproj.a2bnamed.loginFrag"
+        android:label="loginFrag" >
+        <action
+            android:id="@+id/action_loginFrag_to_accountCreationFrag"
+            app:destination="@id/accountCreationFrag" />
+    </fragment>
+    <fragment
+        android:id="@+id/accountCreationFrag"
+        android:name="com.firstproj.a2bnamed.accountCreationFrag"
+        android:label="accountCreationFrag" >
+        <action
+            android:id="@+id/action_accountCreationFrag_to_coreFrag"
+            app:destination="@id/coreFrag"
+            app:popUpTo="@id/accountCreationFrag"
+            app:popUpToInclusive="true" />
+    </fragment>
+    <fragment
+        android:id="@+id/settingsFrag"
+        android:name="com.firstproj.a2bnamed.settingsFrag"
+        android:label="fragment_settings"
+        tools:layout="@layout/fragment_settings" />
+</navigation>

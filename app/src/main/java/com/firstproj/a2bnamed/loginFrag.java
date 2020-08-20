@@ -1,9 +1,9 @@
 package com.firstproj.a2bnamed;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -11,8 +11,12 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.NavDirections;
+import androidx.navigation.Navigation;
 
+import com.firstproj.a2bnamed.adapter.viewmodel;
 import com.google.firebase.FirebaseException;
 import com.google.firebase.FirebaseTooManyRequestsException;
 import com.google.firebase.auth.AuthResult;
@@ -20,14 +24,19 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
 import com.google.firebase.auth.PhoneAuthCredential;
 import com.google.firebase.auth.PhoneAuthProvider;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 
-public class loginAccount extends AppCompatActivity implements
-        View.OnClickListener{
+public class loginFrag extends Fragment implements View.OnClickListener{
+
+    public loginFrag() {
+        // Required empty public constructor
+    }
 
     private static final String TAG = "PhoneAuthActivity";
 
@@ -46,6 +55,9 @@ public class loginAccount extends AppCompatActivity implements
     private PhoneAuthProvider.ForceResendingToken mResendToken;
     private PhoneAuthProvider.OnVerificationStateChangedCallbacks mCallbacks;
 
+    private View parentView;
+    private viewmodel sharedViewModel;
+
     private ViewGroup mPhoneLoginView;
     private ViewGroup mPhoneVerificationView;
     private EditText mPhoneNumberField;
@@ -55,12 +67,13 @@ public class loginAccount extends AppCompatActivity implements
     private Button mSendNumButton;
     private Button mResendCodeButton;
 
-    private String emailLink;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_login_account);
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        parentView = inflater.inflate(R.layout.activity_login_account, container, false);
+
+        sharedViewModel = new ViewModelProvider(requireActivity()).get(viewmodel.class);
 
         // Restore instance state
         if (savedInstanceState != null) {
@@ -68,24 +81,21 @@ public class loginAccount extends AppCompatActivity implements
         }
 
         // Assign views
-        mPhoneLoginView = findViewById(R.id.phoneloginview);
-        mPhoneVerificationView = findViewById(R.id.phoneverificationview);
+        mPhoneLoginView = parentView.findViewById(R.id.phoneloginview);
+        mPhoneVerificationView = parentView.findViewById(R.id.phoneverificationview);
 
-        mPhoneNumberField = findViewById(R.id.phoneNo);
-        mCountryCode = findViewById(R.id.countryCode);
-        mVerificationField = findViewById(R.id.verificationCode);
+        mPhoneNumberField = parentView.findViewById(R.id.phoneNo);
+        mCountryCode = parentView.findViewById(R.id.countryCode);
+        mVerificationField = parentView.findViewById(R.id.verificationCode);
 
-        mVerifyButton = findViewById(R.id.codeverifybutton);
-        mSendNumButton = findViewById(R.id.phoneNoSendButton);
-        mResendCodeButton = findViewById(R.id.resendCodeBttn);
+        mVerifyButton = parentView.findViewById(R.id.codeverifybutton);
+        mSendNumButton = parentView.findViewById(R.id.phoneNoSendButton);
+        mResendCodeButton = parentView.findViewById(R.id.resendCodeBttn);
 
         // Assign click listeners
         mVerifyButton.setOnClickListener(this);
         mSendNumButton.setOnClickListener(this);
         mResendCodeButton.setOnClickListener(this);
-
-
-        emailLink = getIntent().getStringExtra(MainActivity.EMAIL_LINK_MESSAGE);
 
         // Initialize phone auth callbacks
         mCallbacks = new PhoneAuthProvider.OnVerificationStateChangedCallbacks() {
@@ -115,10 +125,10 @@ public class loginAccount extends AppCompatActivity implements
 
                 if (e instanceof FirebaseAuthInvalidCredentialsException) {
                     // Invalid request
-                    mPhoneNumberField.setError("Invalid phone number");
+                    mPhoneNumberField.setError(getString(R.string.la_invalid_no));
                 } else if (e instanceof FirebaseTooManyRequestsException) {
                     // The SMS quota for the project has been exceeded
-                    Toast.makeText(loginAccount.this, "SMS Quota exceeded",
+                    Toast.makeText(getActivity(), getString(R.string.la_sms_exceeded),
                             Toast.LENGTH_SHORT).show();
                 }
 
@@ -144,7 +154,10 @@ public class loginAccount extends AppCompatActivity implements
         };
 
         updateUI(STATE_INITIALIZED);
+
+        return parentView;
     }
+
 
     @Override
     public void onStart() {
@@ -158,15 +171,14 @@ public class loginAccount extends AppCompatActivity implements
         }
     }
 
+
     @Override
-    protected void onSaveInstanceState(@NotNull Bundle outState) {
+    public void onSaveInstanceState(@NotNull Bundle outState) {
         super.onSaveInstanceState(outState);
         outState.putBoolean(KEY_VERIFY_IN_PROGRESS, mVerificationInProgress);
     }
 
-    @Override
-    protected void onRestoreInstanceState(@NotNull Bundle savedInstanceState) {
-        super.onRestoreInstanceState(savedInstanceState);
+    private void onRestoreInstanceState(@NotNull Bundle savedInstanceState) {
         mVerificationInProgress = savedInstanceState.getBoolean(KEY_VERIFY_IN_PROGRESS);
     }
 
@@ -175,9 +187,9 @@ public class loginAccount extends AppCompatActivity implements
     private void startPhoneNumberVerification(String phoneNumber) {
         PhoneAuthProvider.getInstance().verifyPhoneNumber(
                 phoneNumber,        // Phone number to verify
-                60,                 // Timeout duration
+                60,              // Timeout duration
                 TimeUnit.SECONDS,   // Unit of timeout
-                this,               // Activity (for callback binding)
+                requireActivity(),  // Activity (for callback binding)
                 mCallbacks);        // OnVerificationStateChangedCallbacks
 
         mVerificationInProgress = true;
@@ -192,16 +204,16 @@ public class loginAccount extends AppCompatActivity implements
                                         PhoneAuthProvider.ForceResendingToken token) {
         PhoneAuthProvider.getInstance().verifyPhoneNumber(
                 phoneNumber,        // Phone number to verify
-                60,                 // Timeout duration
+                60,              // Timeout duration
                 TimeUnit.SECONDS,   // Unit of timeout
-                this,               // Activity (for callback binding)
+                requireActivity(),  // Activity (for callback binding)
                 mCallbacks,         // OnVerificationStateChangedCallbacks
                 token);             // ForceResendingToken from callbacks
     }
 
     private void signInWithPhoneAuthCredential(PhoneAuthCredential credential) {
         FirebaseAuth.getInstance().signInWithCredential(credential)
-                .addOnCompleteListener(this, task -> {
+                .addOnCompleteListener(requireActivity(), task -> {
                     if (task.isSuccessful()) {
                         // Sign in success, update UI with the signed-in user's information
                         Log.d(TAG, "signInWithCredential:success");
@@ -213,7 +225,7 @@ public class loginAccount extends AppCompatActivity implements
                         Log.w(TAG, "signInWithCredential:failure", task.getException());
                         if (task.getException() instanceof FirebaseAuthInvalidCredentialsException) {
                             // The verification code entered was invalid
-                            mVerificationField.setError("Invalid code");
+                            mVerificationField.setError(getString(R.string.la_invalid_code));
                         }
                         // Update UI
                         updateUI(STATE_SIGNIN_FAILED);
@@ -223,7 +235,7 @@ public class loginAccount extends AppCompatActivity implements
 
     private boolean validatePhoneNumber(String phoneNumber) {
         if (TextUtils.isEmpty(phoneNumber)) {
-            mPhoneNumberField.setError("Invalid phone number");
+            mPhoneNumberField.setError(getString(R.string.la_invalid_no));
             return false;
         }
 
@@ -292,7 +304,7 @@ public class loginAccount extends AppCompatActivity implements
             case R.id.codeverifybutton:
                 String code = mVerificationField.getText().toString();
                 if (TextUtils.isEmpty(code)) {
-                    mVerificationField.setError("Cannot be empty");
+                    mVerificationField.setError(getString(R.string.la_empty_err));
                     return;
                 }
                 verifyPhoneNumberWithCode(mVerificationId, code);
@@ -303,27 +315,43 @@ public class loginAccount extends AppCompatActivity implements
         }
     }
 
-    public void checkForAccount(AuthResult result) {
-        Intent intent;
+    private void checkForAccount(AuthResult result) {
+        sharedViewModel.setUserUid(Objects.requireNonNull(result.getUser()).getUid());
 
         if (Objects.requireNonNull(result.getAdditionalUserInfo()).isNewUser()) {
-            //do create new user
+            // do create new user
             // Logged In already, but does not have any data on server
             Log.v(TAG, "Starting AccountCreation Activity");
-            intent = new Intent(loginAccount.this, AccountCreation.class);
-            intent.putExtra(MainActivity.UID_MESSAGE, result.getUser());
+            NavDirections action =
+                    loginFragDirections.actionLoginFragToAccountCreationFrag();
+            Navigation.findNavController(parentView).navigate(action);
         } else {
             // Logged In
-            // Lets restart the app, for MainActivity to downlink user data
-            Log.v(TAG, "Starting SplashScreen Activity");
-            intent = new Intent(loginAccount.this, MainActivity.class);
-            if (emailLink != null) {
-                intent.putExtra(MainActivity.EMAIL_LINK_MESSAGE, emailLink);
-            }
+            sharedViewModel.db = FirebaseFirestore.getInstance();
+            sharedViewModel.userDoc =
+                    sharedViewModel.db.collection(getString(R.string.fb_users)).document(sharedViewModel.getUserUid());
+
+            sharedViewModel.userDoc.get().addOnCompleteListener(task -> {
+                if (task.isSuccessful()) {
+                    DocumentSnapshot doc = task.getResult();
+                    assert doc != null;
+                    if (doc.exists()) {
+                        Log.v(TAG, "Starting Core App Activity");
+
+                        sharedViewModel.setUserDoc(doc);
+
+                        Navigation.findNavController(parentView).navigate(R.id.coreFrag);
+                    } else {
+                        Log.v(TAG, "Starting AccountCreation Activity");
+                        NavDirections action =
+                                loginFragDirections.actionLoginFragToAccountCreationFrag();
+                        Navigation.findNavController(parentView).navigate(action);
+                    }
+                } else {
+                    // Report an error
+                    Log.e(TAG, "user Doc fetch failed.");
+                }
+            });
         }
-
-        startActivity(intent);
-        finish();
     }
-
 }

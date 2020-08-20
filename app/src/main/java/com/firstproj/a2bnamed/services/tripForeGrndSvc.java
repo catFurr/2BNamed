@@ -46,12 +46,12 @@ import com.google.android.gms.tasks.Task;
  * bound to this service, frequent location updates are permitted. When the activity is removed
  * from the foreground, the service promotes itself to a foreground service, and location updates
  * continue. When the activity comes back to the foreground, the foreground service stops, and the
- * notification assocaited with that service is removed.
+ * notification associated with that service is removed.
  */
 public class tripForeGrndSvc extends Service {
 
     private static final String PACKAGE_NAME =
-            "com.google.android.gms.location.sample.locationupdatesforegroundservice";
+            "com.firstproj.a2bnamed";
 
     private static final String TAG = "FGSVC";
 

@@ -50,7 +50,7 @@ public class customTabFrame extends FrameLayout implements ViewPager.OnPageChang
 
         mapTabBttn.setOnClickListener(view -> {
             // Expand the recycler lock list view
-            bottomSheetList.setState(BottomSheetBehavior.STATE_HALF_EXPANDED);
+            bottomSheetList.setState(BottomSheetBehavior.STATE_COLLAPSED);
 
             // Move to mapView Tab
             viewPager.setCurrentItem(1);

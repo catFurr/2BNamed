@@ -10,4 +10,7 @@
     <color name="leaf_green">#CD90D14C</color>
     <color name="dark_gray">#6F6F6F</color>
     <color name="light_gray">#ACABAB</color>
+
+    <color name="dark_bg">#34495e</color>
+    <color name="light_fg">#b0e0e6</color>
 </resources>
